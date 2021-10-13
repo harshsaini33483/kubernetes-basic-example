@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-deployment-mongo
+spec:
+  selector:
+    matchLabels:
+      type: db
+      service: basic-deployment-mongo
+  template:
+    metadata:
+      labels:
+        type: db
+        service: basic-deployment-mongo
+        vendor: MongoLabs
+    spec:
+      containers:
+      - name: db
+        image: mongo
+        ports:
+        - containerPort: 28017
