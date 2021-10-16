@@ -53,14 +53,14 @@ spec:
         - name: go-mongo-app
           image: vinaysaini97/go-mongo-basic
           ports:
-            - containerPort: 8000
+            - containerPort: 8080
           env:
           - name: DB_HOST
             value: mongo-service
           livenessProbe:
             httpGet:
               path: /hello
-              port: 8000
+              port: 8080
 
 ---
 
@@ -71,6 +71,6 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 8000
+  - port: 8080
   selector:
     app: go-mongo-app
