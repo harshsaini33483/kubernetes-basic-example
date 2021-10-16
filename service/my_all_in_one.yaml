@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mongo-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-db
+  template:
+    metadata:
+      name: mongo-db
+      labels:
+        app: mongo-db
+    spec:
+      containers:
+        - name: mongo-db
+          image: mongo
+          ports:
+            - containerPort: 28017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongo-db
+  ports:
+  - port: 27017
+
+
+---
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: go-mongo-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: go-mongo-app
+  template:
+    metadata:
+      name: go-mongo-app
+      labels:
+        app: go-mongo-app
+    spec:
+      containers:
+        - name: go-mongo-app
+          image: vinaysaini97/go-mongo-basic
+          ports:
+            - containerPort: 8080
+          env:
+          - name: DB_HOST
+            value: mongo-service
+          livenessProbe:
+            httpGet:
+              path: /hello
+              port: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-app-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: go-mongo-app
