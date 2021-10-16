@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: go-lang-mongo
+  labels:
+    name: go-lang-mongo
+spec:
+  containers:
+  - name: go-lang-mongo
+    image: vinaysaini97/go-mongo-basic
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
+    env:
+      - name: DB_HOST
+        value: localhost
+  - name: db
+    image: mongo
