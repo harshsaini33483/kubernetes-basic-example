@@ -18,4 +18,4 @@ spec:
       - name: db
         image: mongo
         ports:
-        - containerPort: 28017
+        - containerPort: 27017
